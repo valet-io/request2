@@ -6,7 +6,7 @@ var Promise      = require('bluebird');
 var pick         = require('lodash.pick');
 var defaults     = require('lodash.defaults');
 var needle       = Promise.promisifyAll(require('needle'));
-var response     = require('./response');
+var utils        = require('./utils');
 
 var internals = {};
 
@@ -48,16 +48,21 @@ Request.prototype.send = Promise.method(function () {
       } catch (e) {}
       return request;
     })
-    .get('0')
+    .spread(function (response, body) {
+      return response;
+    })
     .tap(function (response) {
       this.response = response;
       return this.emitThen('preResponse', response);
     })
-    .then(function () {
-      return response.parse.call(this.response, this.options);
+    .tap(function (response) {
+      return utils.catch(response, this.options);
     })
-    .tap(function (body) {
-      return this.emitThen('postResponse', body);
+    .then(function (response) {
+      return utils.parse(response, this.options);
+    })
+    .tap(function () {
+      return this.emitThen('postResponse', this.response);
     });
 });
 

@@ -1,6 +1,6 @@
-var Request  = require('../../src/request');
-var needle   = require('needle');
-var response = require('../../src/response');
+var Request = require('../../src/request');
+var needle  = require('needle');
+var utils   = require('../../src/utils');
 
 describe('Request', function () {
 
@@ -49,12 +49,14 @@ describe('Request', function () {
         body: {}
       };
       sinon.stub(needle, 'requestAsync').resolves([res]);
-      sinon.stub(response, 'parse').returns(res.body);
+      sinon.stub(utils, 'catch');
+      sinon.stub(utils, 'parse').returns(res.body);
     });
 
     afterEach(function () {
       needle.requestAsync.restore();
-      response.parse.restore();
+      utils.catch.restore();
+      utils.parse.restore();
     });
 
     it('emits a preRequest event before calling needle', function () {
@@ -100,7 +102,15 @@ describe('Request', function () {
         .finally(function () {
           expect(spy)
             .to.have.been.calledWith(res)
-            .and.to.have.been.calledBefore(response.parse);
+            .and.to.have.been.calledBefore(utils.parse);
+        });
+    });
+
+    it('checks for an error response', function () {
+      return request
+        .send()
+        .finally(function () {
+          expect(utils.catch).to.have.been.calledWith(request.response, request.options);
         });
     });
 
@@ -108,8 +118,7 @@ describe('Request', function () {
       return request
         .send()
         .finally(function () {
-          expect(response.parse).to.have.been.calledWith(request.options);
-          expect(response.parse).to.have.been.calledOn(request.response);
+          expect(utils.parse).to.have.been.calledWith(request.response, request.options);
         });
     });
 
@@ -119,8 +128,8 @@ describe('Request', function () {
         .send()
         .finally(function () {
           expect(spy)
-            .to.have.been.calledWith(res.body)
-            .and.to.have.been.calledAfter(response.parse);
+            .to.have.been.calledWith(request.response)
+            .and.to.have.been.calledAfter(utils.parse);
         });
     });
 
