@@ -13,7 +13,7 @@ var internals = {};
 
 internals.options = function (options) {
   return defaults(options || {}, {
-    json: true
+    json: (this.method === 'POST' || this.method === 'PUT')
   });
 };
 
@@ -30,9 +30,11 @@ var Request = function (method, url, data, options) {
   this.method = method;
   this.url = url;
   this.data = data;
-  this.options = internals.options(options);
+  this.options = internals.options.call(this, options);
   EventEmitter.call(this);
 };
+
+Request.ResponseError = utils.ResponseError;
 
 Request.prototype = Object.create(EventEmitter.prototype);
 

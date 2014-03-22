@@ -24,8 +24,13 @@ describe('Request', function () {
         });
     });
 
-    it('defaults to json: true for options', function () {
-      expect(new Request().options).to.contain({json: true});
+    it('defaults to json: true for PUT and POST', function () {
+      expect(new Request('POST').options).to.contain({json: true});
+      expect(new Request('PUT').options).to.contain({json: true});
+    });
+
+    it('defaults to json: false for others', function () {
+      expect(new Request('GET').options).to.contain({json: false});
     });
 
   });
