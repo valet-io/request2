@@ -7,10 +7,6 @@ var dot         = require('dot-component');
 
 var internals = {};
 
-internals.data = function (options) {
-  return options.dataProperty ? dot.get(this.body, options.dataProperty) : this.body;
-};
-
 internals.error = function (options) {
   return new exports.ResponseError(
     internals.error.message.call(this, options),
@@ -26,14 +22,12 @@ internals.error.properties = function (response) {
   return pick(response, 'body', 'statusCode');
 };
 
-internals.catch = function (options) {
+exports.catch = function (options) {
   if (this.statusCode > 399) throw internals.error.call(this, options);
 };
 
 exports.ResponseError = createError('ResponseError');
 
 exports.parse = function (options) {
-  options = options || {};
-  internals.catch.call(this, options);
-  return internals.data.call(this, options);
+  return options.dataProperty ? dot.get(this.body, options.dataProperty) : this.body;
 };
