@@ -33,7 +33,8 @@
     "lodash.pick": "~2.4.1",
     "emit-then": "0.0.3",
     "http-status": "~0.1.4",
-    "dot-component": "~0.1.1"
+    "dot-component": "~0.1.1",
+    "lodash.clonedeep": "~2.4.1"
   },
   "devDependencies": {
     "jshint-stylish": "~0.1.5",

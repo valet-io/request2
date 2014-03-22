@@ -90,8 +90,9 @@ describe('Request', function () {
         .send()
         .finally(function () {
           expect(stub)
-            .to.have.been.calledWith(request)
-            .and.to.have.been.calledAfter(needle.requestAsync);
+            .to.have.been.calledWith(sinon.match.has('method'))
+            .to.have.been.calledAfter(needle.requestAsync);
+          expect(stub).to.not.have.been.calledWith(request);
         });
     });
 

@@ -5,6 +5,7 @@ var emitThen     = require('emit-then');
 var Promise      = require('bluebird');
 var pick         = require('lodash.pick');
 var defaults     = require('lodash.defaults');
+var clone        = require('lodash.clonedeep');
 var needle       = Promise.promisifyAll(require('needle'));
 var utils        = require('./utils');
 
@@ -44,7 +45,7 @@ Request.prototype.send = Promise.method(function () {
     .then(function () {
       var request = internals.needle.call(this);
       try {
-        this.emit('postRequest', this);
+        this.emit('postRequest', clone(this));
       } catch (e) {}
       return request;
     })
