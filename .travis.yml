@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+- '0.11'
+- '0.10'
+deploy:
+  provider: npm
+  email: bvdrucker@gmail.com
+  api_key:
+    secure: PjvywwGIuL8JpwfurpEmdsAfOWt9/29QkJRjlp6FYvR23C5oR9CUS+7KWC8uw7GgB3NPjRA/HZjGgJ73i65wmFm9QLxYg4bB1dIpgDew1/Ox4fHdtdDFH2ttqbxajp7uhwxNZ97il/EZsj06Ur6Jpc646BaGbXSbiYRSwSbBGBY=
+  on:
+    tags: true
+    repo: valet-io/request2
