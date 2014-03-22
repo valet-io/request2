@@ -43,6 +43,7 @@
     "gulp-istanbul": "~0.1.1",
     "gulp-mocha": "~0.4.1",
     "test-setup": "git://github.com/valet-io/test-setup.git",
-    "gulp-load-plugins": "~0.4.0"
+    "gulp-load-plugins": "~0.4.0",
+    "nock": "~0.27.2"
   }
 }

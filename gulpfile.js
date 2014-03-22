@@ -5,7 +5,7 @@ var plugins = require('gulp-load-plugins')();
 
 var files = {
   src: 'src/*.js',
-  test: ['test/unit/*.js', 'test/integration/*.js']
+  test: ['test/unit/*.js', 'test/integration.js']
 };
 
 files.all = [files.src].concat(files.test);
