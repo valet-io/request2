@@ -1,0 +1,28 @@
+{
+  "name": "request2",
+  "version": "0.0.0",
+  "description": "Consistent promise and event-driven API for performing HTTP/JSON requests",
+  "main": "src/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/valet-io/request2"
+  },
+  "keywords": [
+    "request",
+    "http",
+    "json",
+    "promise"
+  ],
+  "author": "Ben Drucker <bvdrucker@gmail.com> (http://www.bendrucker.me)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/valet-io/request2/issues"
+  },
+  "homepage": "https://github.com/valet-io/request2"
+}
