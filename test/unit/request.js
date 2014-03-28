@@ -107,7 +107,7 @@ describe('Request', function () {
         .send()
         .finally(function () {
           expect(spy)
-            .to.have.been.calledWith(res)
+            .to.have.been.calledWith(request, res)
             .and.to.have.been.calledBefore(utils.parse);
         });
     });
@@ -134,7 +134,7 @@ describe('Request', function () {
         .send()
         .finally(function () {
           expect(spy)
-            .to.have.been.calledWith(request.response)
+            .to.have.been.calledWith(request, request.response)
             .and.to.have.been.calledAfter(utils.parse);
         });
     });

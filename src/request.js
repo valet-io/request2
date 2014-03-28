@@ -56,7 +56,7 @@ Request.prototype.send = Promise.method(function () {
     })
     .tap(function (response) {
       this.response = response;
-      return this.emitThen('preResponse', response);
+      return this.emitThen('preResponse', this, response);
     })
     .tap(function (response) {
       return utils.catch(response, this.options);
@@ -65,7 +65,7 @@ Request.prototype.send = Promise.method(function () {
       return utils.parse(response, this.options);
     })
     .tap(function () {
-      return this.emitThen('postResponse', this.response);
+      return this.emitThen('postResponse', this, this.response);
     });
 });
 
