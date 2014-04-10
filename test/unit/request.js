@@ -24,13 +24,30 @@ describe('Request', function () {
         });
     });
 
-    it('defaults to json: true for PUT and POST', function () {
-      expect(new Request('POST').options).to.contain({json: true});
-      expect(new Request('PUT').options).to.contain({json: true});
+    describe('json', function () {
+
+      it('defaults to true for PUT and POST', function () {
+        expect(new Request('POST', '').options).to.contain({json: true});
+        expect(new Request('PUT', '').options).to.contain({json: true});
+      });
+
+      it('defaults to false for others', function () {
+        expect(new Request('GET', '').options).to.contain({json: false});
+      });
+
     });
 
-    it('defaults to json: false for others', function () {
-      expect(new Request('GET').options).to.contain({json: false});
+    describe('query', function () {
+
+      it('is a noop with no query', function () {
+        expect(new Request(null, 'url').url).to.equal('url');
+      });
+
+      it('parses the query and appends it to the url', function () {
+        expect(new Request(null, 'url', null, {query: {foo: 'bar'}}).url)
+          .to.equal('url?foo=bar');
+      });
+
     });
 
   });

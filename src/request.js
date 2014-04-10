@@ -4,23 +4,32 @@ var EventEmitter = require('events').EventEmitter;
 var emitThen     = require('emit-then');
 var Promise      = require('bluebird');
 var _            = require('lodash');
+var url          = require('url');
 var needle       = Promise.promisifyAll(require('needle'));
 var utils        = require('./utils');
 
 var internals = {};
 
 internals.options = function (request, options) {
-  return _.defaults(options || {}, {
-    json: (request.method === 'POST' || request.method === 'PUT')
+  options = options || {};
+  return _.defaults(options, {
+    json: (request.method === 'POST' || request.method === 'PUT'),
+    query: options.qs || {}
   });
 };
 
-internals.needle = function () {
+internals.query = function (request, options) {
+  var parsed = url.parse(request.url, true);
+  _.extend(parsed.query, options.query);
+  request.url = url.format(parsed);
+};
+
+internals.needle = function (request) {
   return needle.requestAsync(
-    this.method,
-    this.url,
-    this.data,
-    _.pick(this.options, 'timeout', 'follow', 'proxy', 'agent', 'headers', 'auth', 'json')
+    request.method,
+    request.url,
+    request.data,
+    _.pick(request.options, 'timeout', 'follow', 'proxy', 'agent', 'headers', 'auth', 'json')
   );
 };
 
@@ -29,6 +38,7 @@ var Request = function (method, url, data, options) {
   this.url = url;
   this.data = data;
   this.options = internals.options(this, options);
+  internals.query(this, this.options);
   EventEmitter.call(this);
 };
 
@@ -43,7 +53,7 @@ Request.prototype.send = Promise.method(function () {
     .emitThen('preRequest', this)
     .bind(this)
     .then(function () {
-      var request = internals.needle.call(this);
+      var request = internals.needle(this);
       try {
         this.emit('postRequest', _.clone(this));
       } catch (e) {}
