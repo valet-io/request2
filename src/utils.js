@@ -1,6 +1,6 @@
 'use strict';
 
-var pick        = require('lodash.pick');
+var _           = require('lodash');
 var httpStatus  = require('http-status');
 var createError = require('create-error');
 var dot         = require('dot-component');
@@ -19,7 +19,7 @@ internals.error.message = function (response, options) {
 };
 
 internals.error.properties = function (response) {
-  return pick(response, 'body', 'statusCode');
+  return _.pick(response, 'body', 'statusCode');
 };
 
 exports.catch = function (response, options) {

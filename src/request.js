@@ -3,16 +3,14 @@
 var EventEmitter = require('events').EventEmitter;
 var emitThen     = require('emit-then');
 var Promise      = require('bluebird');
-var pick         = require('lodash.pick');
-var defaults     = require('lodash.defaults');
-var clone        = require('lodash.clonedeep');
+var _            = require('lodash');
 var needle       = Promise.promisifyAll(require('needle'));
 var utils        = require('./utils');
 
 var internals = {};
 
 internals.options = function (options) {
-  return defaults(options || {}, {
+  return _.defaults(options || {}, {
     json: (this.method === 'POST' || this.method === 'PUT')
   });
 };
@@ -22,7 +20,7 @@ internals.needle = function () {
     this.method,
     this.url,
     this.data,
-    pick(this.options, 'timeout', 'follow', 'proxy', 'agent', 'headers', 'auth', 'json')
+    _.pick(this.options, 'timeout', 'follow', 'proxy', 'agent', 'headers', 'auth', 'json')
   );
 };
 
@@ -47,11 +45,11 @@ Request.prototype.send = Promise.method(function () {
     .then(function () {
       var request = internals.needle.call(this);
       try {
-        this.emit('postRequest', clone(this));
+        this.emit('postRequest', _.clone(this));
       } catch (e) {}
       return request;
     })
-    .spread(function (response, body) {
+    .spread(function (response) {
       return response;
     })
     .tap(function (response) {
