@@ -9,9 +9,9 @@ var utils        = require('./utils');
 
 var internals = {};
 
-internals.options = function (options) {
+internals.options = function (request, options) {
   return _.defaults(options || {}, {
-    json: (this.method === 'POST' || this.method === 'PUT')
+    json: (request.method === 'POST' || request.method === 'PUT')
   });
 };
 
@@ -28,7 +28,7 @@ var Request = function (method, url, data, options) {
   this.method = method;
   this.url = url;
   this.data = data;
-  this.options = internals.options.call(this, options);
+  this.options = internals.options(this, options);
   EventEmitter.call(this);
 };
 
