@@ -32,7 +32,7 @@
     "emit-then": "0.0.3",
     "http-status": "~0.1.4",
     "dot-component": "~0.1.1",
-    "lodash": "2.x"
+    "lodash": "4.x"
   },
   "devDependencies": {
     "jshint-stylish": "~0.1.5",
